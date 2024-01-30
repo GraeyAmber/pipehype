@@ -1,5 +1,6 @@
-package net.graeyamber.pipehype;
+package net.graeyamber.pipehype.item;
 
+import net.graeyamber.pipehype.PipeHype;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.RenderHighlightEvent;
+import org.joml.Vector3f;
 
 public class GauntletItem extends Item {
 
@@ -62,9 +66,22 @@ public class GauntletItem extends Item {
                         tagGauntlet.putString("block_shape", blockShape.toString());
 
 
-                        renderCross(pLevel, blockPos);
+                        // renderCross(pLevel, blockPos);
 
                         Vec3 locationHit = hit.getLocation();
+
+                        var box = new AABB(blockPos);
+
+                        var topRight = new Vector3f((float) box.maxX, (float) box.maxY, (float) box.maxZ);
+                        var bottomRight = new Vector3f((float) box.maxX, (float) box.minY, (float) box.maxZ);
+
+                        var normal = new Vector3f(topRight).sub(bottomRight);
+                        // var mat = poseStack.last().pose();
+
+
+                        // buffer.vertex(mat, topRight.x, topRight.y, topRight.z).color(0.5f, 0.5f, 0.5f, 1f).normal(normal.x, normal.y, normal.z).endVertex();
+                        // buffer.vertex(mat, bottomRight.x, bottomRight.y, bottomRight.z).color(0.5f, 0.5f, 0.5f, 1f).normal(normal.x, normal.y, normal.z).endVertex();
+
 
                         // TO GET THE FACE YOU'RE LOOKING AT, REFER TO PLAYER FACING DIRECTION
 
@@ -82,11 +99,15 @@ public class GauntletItem extends Item {
                                     (double) head.x + result.x*i/len, (double) head.y +result.y*i/len, (double) head.z +result.z*i/len,
                                     0.0, 0.0, 0.0);
                         } */
+
+                        // uuh line??
+
                     }
                 }
             }
         }
     }
+
 
     public void renderCross(Level pLevel, BlockPos blockPos) {
         pLevel.addParticle(
